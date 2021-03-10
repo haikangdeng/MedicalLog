@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      div.ellipsis {
+        white-space: nowrap; 
+        word-break: break-word;
+        overflow: scroll;
+      }
+
+      div.textbreak {
+        overflow-wrap: break-word;
+      }
+
+    </style>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Decentralized hospital record</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+
+
+
+    <!--THIS PART ONLY FOR PATIENTS-->
+    <div id="patientSite" style="display:none;">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-sm-push-2">
+            <h1 class="text-center">Medical Service</h1>
+            <h4 class="text-center">Patient Site</h4>
+            <hr/>
+            <br/>
+          </div>
+        </div>
+
+        <div id="accountRow" class="row">
+          <!-- PI LOAD HERE -->
+        </div>
+
+        <div id="createRow" class="row row-create">
+          <button type="button" class="btn btn-primary btn-lg btn-createAccount" data-toggle="modal" data-target="#exampleModalCenter">Create Account</button>
+        </div>
+        <br>
+
+        <div id="registerRow" class="row row-register">
+          <button type="button" class="btn btn-primary btn-register" data-toggle="modal" data-target="#RegisterModalCenter">Register for Appointment</button>
+        </div>
+        <br>
+
+        <div id="getReportRow" class="row row-getReport">
+          <button type="button" id='getReportButton' class="btn btn-info btn-getReport" value="show">View My Reports</button>
+        </div>
+        <br>
+
+        <div id="reportRow" class="row-report">
+          <!-- REPORTS LOAD HERE -->
+        </div>
+      </div>
+
+      <!-- RegisterModalCenter -->
+      <div class="modal fade" id="RegisterModalCenter" tabindex="-1" role="dialog" aria-labelledby="RegisterModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="RegisterModalCenterTitle">Appointment Registration</h5>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <h5>Doctor Address</h5>
+                    <textarea class="form-control postbox" id="RegDocAddr" rows="1"></textarea>
+                </div>
+                <div style="text-align:right">
+                      <button type="submit" data-dismiss="modal" class="btn btn-primary btn-register2">Register</button>
+                      <!--button type="button" style="float:right" class="btn btn-secondary" data-dismiss="modal">Close</button-->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- showModalCenter-->
+      <div class="modal fade" id="showModalCenter" tabindex="-1" role="dialog" aria-labelledby="showModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="showModalCenterTitle">Show Report to Doctor</h5>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <h5>Doctor Address</h5>
+                    <textarea class="form-control postbox" id="showDocAddr" rows="1"></textarea>
+                </div>
+                <div class="row-show" style="text-align:right">
+                      <button type="submit" data-dismiss="modal" class="btn btn-primary btn-show2" data-id="0">Show</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- exampleModalCenter -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <!-- Modal Content-->
+          <div class="modal-content">
+            <!--Modal Header-->
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Account Information</h5>
+            </div>
+            <!--Modal Body-->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                      <h5>Name</h5>
+                      <textarea class="form-control postbox" id="CAName" rows="1"></textarea>
+                      <h5>Age</h5>
+                      <textarea class="form-control postbox" id="CAAge" rows="1"></textarea>
+                      <h5>Gender</h5>
+                      <textarea class="form-control postbox" id="CAGender" rows="1"></textarea>
+                    </div>
+                    <div style="text-align:right">
+                      <button type="submit" data-dismiss="modal" class="btn btn-primary btn-createAccount2">Create</button>
+                      <!--button type="button" style="float:right" class="btn btn-secondary" data-dismiss="modal">Close</button-->
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Reports-->
+      <div id="reportTemplate" class="container" style="display: none;">
+        <div class="col-sm-6 col-md-4 col-lg-3">
+          <div class="panel panel-default panel-report">
+            <div class="panel-heading">
+              <strong class="VRHeading"></strong>
+            </div>
+
+            <div class="panel-body textbreak">
+              <strong> Date</strong>: <span class="VRDate"> </span><br/>
+              <strong> Symptoms</strong>: <span class="VRSymptoms"> </span><br/>
+              <strong> Diagnosis</strong>: <span class="VRDiagnosis"></span><br/>
+              <strong> Prescription</strong>: <span class="VRPrescription"></span><br/>
+              <button class="btn btn-default btn-release" type="button" data-id="0">Disclose</button> 
+              <button class="btn btn-default btn-openTo" type="button" data-id="0" data-toggle="modal" data-target="#showModalCenter">Show To</button><br/>
+              <div id="shownToRow" class="ellipsis">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--account information-->
+      <div id="accountTemplate" style="display: none;">
+        <div class="col-md-12">
+          <div class="panel panel-default panel-pet">
+            <div class="panel-heading">
+              <strong>My Information</strong>
+            </div>
+
+            <div class="panel-body">
+              <strong> Name</strong>: <span class="PIName"> </span><br/>
+              <strong> Age</strong>: <span class="PIAge"> </span><br/>
+              <strong> Gender</strong>: <span class="PIGender"></span><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/web3.min.js"></script>
+      <script src="js/truffle-contract.js"></script>
+      <script src="js/app.js"></script>
+
+    </div>
+
+
+
+
+
+
+
+    <!--DOCTORSITE-->
+    <!--DOCTORSITE-->
+    <!--DOCTORSITE-->
+    <!--DOCTORSITE-->
+    <!--DOCTORSITE-->
+    <!--DOCTORSITE-->
+    <div id="doctorSite" style="display:none;">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-sm-push-2">
+            <h1 class="text-center">Medical Service</h1>
+            <h4 class="text-center">Doctor Site</h4>
+            <hr/>
+            <br/>
+          </div>
+        </div>
+
+        <div id="DaccountRow" class="row">
+          <!-- PI LOAD HERE -->
+        </div>
+
+        <div id="fillReportRow" class="row row-fillReport">
+          <button type="button" id='fillReportButton' class="btn btn-primary btn-fillReport" value="show" data-toggle="modal" data-target="#doctorFillModalCenter">Fill Report</button>
+        </div>
+        <br/>
+
+        <div id="viewReportRow" class="row row-viewReport">
+          <button type="button" id='viewReportButton' class="btn btn-primary btn-viewReport" value="show" data-toggle="modal" data-target="#DocViewModalCenter">Search Report</button>
+        </div>
+        <br>
+
+      </div>
+
+
+      <!--doctorViewModalCenter-->
+      <div class="modal fade" id="DocViewModalCenter" tabindex="-1" role="dialog" aria-labelledby="docViewCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="DocViewCenterTitle">Search by</h5>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <h5>Patient Address</h5>
+                  <textarea class="form-control postbox" id="VRAddr" rows="1"></textarea>
+
+                  <h5>Report Index</h5>
+                  <textarea class="form-control postbox" id="VRIdx" rows="1"></textarea>
+                </div>
+                <div style="text-align:right">
+                  <button type="submit" data-dismiss="modal" data-toggle="modal" data-target="#viewAfterSearch" class="btn btn-primary btn-search2">Search</button>
+                  <!--button type="submit" data-dismiss="modal" class="btn btn-primary btn-search2">Search</button-->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--SECOND LOOK-->
+      <div class="modal fade" id="viewAfterSearch" tabindex="-1" role="dialog" aria-labelledby="veCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="DocViewCenterTitle">Report</h5>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="panel-body textbreak">
+                  <strong> Date</strong>:  <span class="SRDate"> </span><br/>
+                  <strong> Symptoms</strong>:  <span class="SRSymptoms"> </span><br/>
+                  <strong> Diagnosis</strong>:  <span class="SRDiagnosis"></span><br/>
+                  <strong> Prescription</strong>:  <span class="SRPrescription"></span><br/>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!--doctorFillModalCenter-->
+      <div class="modal fade" id="doctorFillModalCenter" tabindex="-1" role="dialog" aria-labelledby="doctorFillModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <!-- Modal Content-->
+          <div class="modal-content">
+            <!--Modal Header-->
+            <div class="modal-header">
+              <h5 class="modal-title" id="doctorFillModalCenterTitle">Report Information</h5>
+            </div>
+            <!--Modal Body-->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                      <h5>Patient's Address</h5>
+                      <textarea class="form-control postbox" id="DFAddr" rows="1"></textarea>
+
+                      <h5>Index of Report</h5>
+                      <textarea class="form-control postbox" id="DFIdx" rows="1"></textarea>
+
+                      <h5>Date</h5>
+                      <textarea class="form-control postbox" id="DFDate" rows="1"></textarea>
+
+                      <h5>Symptoms</h5>
+                      <textarea class="form-control postbox" id="DFSymptoms" rows="1"></textarea>
+
+                      <h5>Diagnosis</h5>
+                      <textarea class="form-control postbox" id="DFDiagnosis" rows="1"></textarea>
+
+                      <h5>Prescription</h5>
+                      <textarea class="form-control postbox" id="DFPrescription" rows="1"></textarea>
+
+                    </div>
+                    <div style="text-align:right">
+                      <button type="submit" data-dismiss="modal" class="btn btn-primary btn-fillReport2">Complete</button>
+                      <!--button type="button" style="float:right" class="btn btn-secondary" data-dismiss="modal">Close</button-->
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!--account information-->
+      <div id="DaccountTemplate" style="display:none;">
+        <div class="col-md-12">
+          <div class="panel panel-default panel-pet">
+            <div class="panel-heading">
+              <strong>My Information</strong>
+            </div>
+
+            <div class="panel-body ellipses">
+              <strong> Name</strong>: <span class="DocName"> </span><br/>
+              <strong> Address</strong>: <span class="DocAddr"> </span><br/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+
+  </body>
+</html>
